@@ -13,8 +13,10 @@
 
 
 // Authentication routes
-Auth::routes();
 
+use App\Http\Controllers\Auth\GitHubSocialiteController;
+
+Auth::routes();
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
@@ -22,3 +24,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 // Include Wave Routes
 Wave::routes();
+
+Route::get('auth/github/redirect', [GitHubSocialiteController::class, 'redirect'])->name('github.login');
+Route::get('auth/github/callback', [GitHubSocialiteController::class, 'callback']);
