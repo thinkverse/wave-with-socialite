@@ -83,6 +83,10 @@
                                 Sign in
                             </button>
                         </span>
+                        <p class="mt-4 text-sm leading-5 text-center text-gray-600 max-w">or</p>
+                        <a href="{{ route('github.login') }}" class="mt-4 flex justify-center w-full px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out border border-transparent rounded-md bg-wave-600 hover:bg-wave-500 focus:outline-none focus:border-wave-700 focus:shadow-outline-wave active:bg-wave-700">
+                            Sign in with GitHub
+                        </a>
                     </div>
                 </form>
 
