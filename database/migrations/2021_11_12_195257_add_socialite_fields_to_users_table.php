@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('provider_id')->nullable();
-            $table->string('password')->nullable()->change();
         });
     }
 
@@ -27,8 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('provider_id');
-            $table->string('password')->change();
+            $table->dropColumn('provider_id');
         });
     }
 };

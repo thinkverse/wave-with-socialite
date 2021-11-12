@@ -35,6 +35,7 @@ class GitHubSocialiteController extends Controller
             ],
             [
                 'name'          => $github->getName(),
+                'password'      => bcrypt(str_random()),
                 'verified'      => 1,
                 'trial_ends_at' => $trial_ends_at,
                 'role'          => $role->id,
