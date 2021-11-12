@@ -18,7 +18,7 @@ class GitHubSocialiteController extends Controller
     public function callback()
     {
         $github = Socialite::driver('github')->user();
-        $role = Role::where('name', '=', config('voyager.user.default_role'))->first();
+        $role   = Role::where('name', '=', config('voyager.user.default_role'))->first();
 
         $trial_days    = setting('billing.trial_days', 14);
         $trial_ends_at = null;
@@ -41,7 +41,7 @@ class GitHubSocialiteController extends Controller
             ],
         );
 
-        auth()->guard('web')->login($user, false);
+        auth()->guard()->login($user, false);
 
         return redirect()
             ->route('wave.dashboard')
