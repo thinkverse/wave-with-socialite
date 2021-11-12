@@ -2,6 +2,7 @@
 
 namespace Wave\Http\Controllers;
 
+use App\Rules\RequiredIfNotNull;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +67,7 @@ class SettingsController extends Controller
     public function securityPut(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'current_password' => 'required',
+            'current_password' => new RequiredIfNotNull,
             'password' => 'required|confirmed|min:'.config('wave.auth.min_password_length'),
         ]);
 
@@ -74,7 +75,7 @@ class SettingsController extends Controller
             return back()->with(['message' => $validator->errors()->first(), 'message_type' => 'danger']);
         }
 
-        if (! Hash::check($request->current_password, $request->user()->password)) {
+        if (! is_null(auth()->user()->password) && ! Hash::check($request->current_password, $request->user()->password)) {
             return back()->with(['message' => 'Incorrect current password entered.', 'message_type' => 'danger']);
         }
 
