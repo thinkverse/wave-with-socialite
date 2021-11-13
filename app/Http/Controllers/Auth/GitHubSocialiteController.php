@@ -60,11 +60,11 @@ class GitHubSocialiteController extends Controller
         ]);
 
         event(new Registered($user));
-        
+
         return $this->login($user, 'Thanks for signing up!');
     }
 
-    protected function login($user, $message) {
+    private function login($user, $message) {
         auth()->guard()->login($user, false);
 
         return redirect()
