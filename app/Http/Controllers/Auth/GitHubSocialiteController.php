@@ -36,9 +36,7 @@ class GitHubSocialiteController extends Controller
             return $this->login($user, 'Successfully logged in.');
         }
 
-        $user = auth()->check()
-            ? auth()->user()
-            : User::query()
+        $user = User::query()
                 ->where('email', $github->getEmail())
                 ->first();
 
