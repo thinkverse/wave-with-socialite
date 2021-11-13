@@ -25,5 +25,7 @@ Route::group(['prefix' => 'admin'], function () {
 // Include Wave Routes
 Wave::routes();
 
-Route::get('auth/github/redirect', [GitHubSocialiteController::class, 'redirect'])->name('github.login');
-Route::get('auth/github/callback', [GitHubSocialiteController::class, 'callback']);
+Route::middleware('guest')->group(function () {
+    Route::get('auth/github/redirect', [GitHubSocialiteController::class, 'redirect'])->name('github.login');
+    Route::get('auth/github/callback', [GitHubSocialiteController::class, 'callback']);    
+});
