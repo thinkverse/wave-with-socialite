@@ -27,21 +27,41 @@ class GitHubSocialiteController extends Controller
             $trial_ends_at = now()->addDays(setting('billing.trial_days', 14));
         }
 
-        $user = User::firstOrCreate(
-            [
-                'provider_id' => $github->getId(),
-                'email'       => $github->getEmail(),
-                'username'    => $github->getNickname(),
-            ],
-            [
+        $user = User::query()
+            ->where('provider_id', $github->getId())
+            ->first();
+
+        if ($user !== null) {
+            return $this->login($user);
+        }
+
+        $user = auth()->check()
+            ? auth()->user()
+            : User::query()
+                ->where('email', $github->getEmail())
+                ->first();
+
+        if (! $user) {
+            $user = User::query()->create([
+                'provider_id'   => $github->getId(),
+                'email'         => $github->getEmail(),
                 'name'          => $github->getName(),
                 'password'      => bcrypt(str_random()),
+                'username'      => $github->getNickname(),
                 'verified'      => 1,
                 'trial_ends_at' => $trial_ends_at,
                 'role'          => $role->id,
-            ],
-        );
+            ]);
+        }
 
+        $user->update([
+            'provider_id' => $github->getId(),
+        ]);
+        
+        return $this->login($user);
+    }
+
+    protected function login($user) {
         auth()->guard()->login($user, false);
 
         return redirect()
